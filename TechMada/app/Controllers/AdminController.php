@@ -2,135 +2,233 @@
 
 namespace App\Controllers;
 
+use App\Models\EmployeModel;
+use App\Models\DepartementsModel;
+
 class AdminController extends BaseController
 {
     protected $session;
+    protected $employeModel;
+    protected $departementModel;
 
     public function __construct()
     {
-        $this->session = service('session');
-        $this->checkRole();
+        $this->session = session();
+        $this->employeModel = new EmployeModel();
+        $this->departementModel = new DepartementsModel();
     }
 
-    /**
-     * Vérifier que l'utilisateur a le rôle admin
-     */
-    protected function checkRole()
-    {
-        $role = $this->session->get('user_role');
-        
-        if ($role !== 'admin') {
-            throw new \RuntimeException('Accès réservé aux administrateurs');
-        }
-    }
-
-    /**
-     * Dashboard Admin
-     */
+    // ============================================================
+    // DASHBOARD
+    // ============================================================
     public function dashboard(): string
     {
-        return view('admin/dashboard');
+        return view('admin/dashboard', [
+            'total_employes' => $this->employeModel->countAllResults(),
+            'total_departements' => $this->departementModel->countAllResults(),
+        ]);
     }
 
-    /**
-     * Gestion des utilisateurs
-     */
-    public function utilisateurs(): string
+    // ============================================================
+    // EMPLOYÉS
+    // ============================================================
+
+    public function employes(): string
     {
-        return view('admin/utilisateurs');
+        return view('admin/employes/index', [
+            'employes' => $this->employeModel->getEmployesWithDepartement(),
+        ]);
     }
 
-    /**
-     * Créer un utilisateur
-     */
-    public function createUtilisateur()
+    public function createEmployeForm(): string
+    {
+        return view('admin/employes/form', [
+            'departements' => $this->departementModel->findAll(),
+            'employe' => null,
+            'action' => 'create',
+            'errors' => session()->getFlashdata('errors') ?? [],
+        ]);
+    }
+
+    public function createEmploye()
     {
         if ($this->request->getMethod() !== 'post') {
-            return redirect()->back();
+            return redirect()->to('/admin/employe/form');
         }
 
-        // Validation CSRF est automatique
         $validated = $this->validate([
-            'email'    => 'required|valid_email|is_unique[employes.email]',
-            'password' => 'required|min_length[6]',
-            'nom'      => 'required|string|min_length[2]|max_length[100]',
-            'prenom'   => 'required|string|min_length[2]|max_length[100]',
-            'role'     => 'required|in_list[employe,rh,admin]',
+            'nom'            => 'required|min_length[2]|max_length[100]',
+            'prenom'         => 'required|min_length[2]|max_length[100]',
+            'email'          => 'required|valid_email|is_unique[employes.email]',
+            'password'       => 'required|min_length[6]',
+            'role'           => 'required|in_list[employe,rh,admin]',
+            'departement_id' => 'permit_empty|numeric',
+            'date_embauche'  => 'required|valid_date[Y-m-d]',
         ]);
 
         if (!$validated) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return redirect()->to('/admin/employe/form')
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
-        // Créer l'utilisateur
-        return redirect()->to('/admin/utilisateurs')->with('success', 'Utilisateur créé');
+        $data = [
+            'nom'            => $this->request->getPost('nom'),
+            'prenom'         => $this->request->getPost('prenom'),
+            'email'          => $this->request->getPost('email'),
+            'password'       => $this->request->getPost('password'),
+            'role'           => $this->request->getPost('role'),
+            'departement_id' => $this->request->getPost('departement_id') ?: null,
+            'date_embauche'  => $this->request->getPost('date_embauche'),
+            'actif'          => 1,
+        ];
+
+        if ($this->employeModel->createEmploye($data)) {
+            return redirect()->to('/admin/employes')->with('success', 'Employé créé');
+        }
+
+        return redirect()->to('/admin/employe/form')->with('error', 'Erreur création employé');
     }
 
-    /**
-     * Mettre à jour un utilisateur
-     */
-    public function updateUtilisateur(int $id)
+    public function editEmployeForm($id): string
     {
-        if ($this->request->getMethod() !== 'post') {
-            return redirect()->back();
+        $employe = $this->employeModel->find($id);
+
+        if (!$employe) {
+            return redirect()->to('/admin/employes')->with('error', 'Employé introuvable');
         }
 
-        // Validation CSRF est automatique
+        return view('admin/employes/form', [
+            'departements' => $this->departementModel->findAll(),
+            'employe' => $employe,
+            'action' => 'edit',
+            'errors' => session()->getFlashdata('errors') ?? [],
+        ]);
+    }
+
+    public function updateEmploye($id)
+    {
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to('/admin/employes');
+        }
+
+        $rules = [
+            'nom'            => 'required|min_length[2]|max_length[100]',
+            'prenom'         => 'required|min_length[2]|max_length[100]',
+            'email'          => 'required|valid_email|is_unique[employes.email,id,' . $id . ']',
+            'role'           => 'required|in_list[employe,rh,admin]',
+            'departement_id' => 'permit_empty|numeric',
+            'date_embauche'  => 'required|valid_date[Y-m-d]',
+            'actif'          => 'required|in_list[0,1]',
+        ];
+
+        if (!empty($this->request->getPost('password'))) {
+            $rules['password'] = 'min_length[6]';
+        }
+
+        if (!$this->validate($rules)) {
+            return redirect()->to('/admin/employe/' . $id . '/edit')
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
+        }
+
+        $data = [
+            'nom'            => $this->request->getPost('nom'),
+            'prenom'         => $this->request->getPost('prenom'),
+            'email'          => $this->request->getPost('email'),
+            'role'           => $this->request->getPost('role'),
+            'departement_id' => $this->request->getPost('departement_id') ?: null,
+            'date_embauche'  => $this->request->getPost('date_embauche'),
+            'actif'          => $this->request->getPost('actif'),
+        ];
+
+        if (!empty($this->request->getPost('password'))) {
+            $data['password'] = $this->request->getPost('password');
+        }
+
+        $this->employeModel->updateEmploye($id, $data);
+
+        return redirect()->to('/admin/employes')->with('success', 'Employé mis à jour');
+    }
+
+    public function deleteEmploye($id)
+    {
+        $this->employeModel->deactivateEmploye($id);
+        return redirect()->to('/admin/employes')->with('success', 'Employé désactivé');
+    }
+
+    // ============================================================
+    // DÉPARTEMENTS
+    // ============================================================
+
+    public function departements(): string
+    {
+        return view('admin/departements/index', [
+            'departements' => $this->departementModel->findAll(),
+        ]);
+    }
+
+    public function createDepartementForm(): string
+    {
+        return view('admin/departements/form', [
+            'departement' => null,
+            'action' => 'create',
+            'errors' => session()->getFlashdata('errors') ?? [],
+        ]);
+    }
+
+    public function createDepartement()
+    {
         $validated = $this->validate([
-            'nom'    => 'required|string|min_length[2]|max_length[100]',
-            'prenom' => 'required|string|min_length[2]|max_length[100]',
-            'role'   => 'required|in_list[employe,rh,admin]',
-            'actif'  => 'required|in_list[0,1]',
+            'nom'         => 'required|min_length[2]|max_length[100]|is_unique[departements.nom]',
+            'description' => 'permit_empty|max_length[500]',
         ]);
 
         if (!$validated) {
-            return redirect()->back()->with('errors', $this->validator->getErrors());
+            return redirect()->to('/admin/departement/form')
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
-        // Mettre à jour l'utilisateur
-        return redirect()->to('/admin/utilisateurs')->with('success', 'Utilisateur mis à jour');
+        $this->departementModel->insert([
+            'nom' => $this->request->getPost('nom'),
+            'description' => $this->request->getPost('description'),
+        ]);
+
+        return redirect()->to('/admin/departements')->with('success', 'Département créé');
     }
 
-    /**
-     * Supprimer un utilisateur
-     */
-    public function deleteUtilisateur(int $id)
+    public function updateDepartement($id)
     {
-        if ($this->request->getMethod() !== 'post') {
-            return redirect()->back();
-        }
-
-        // Supprimer l'utilisateur
-        return redirect()->to('/admin/utilisateurs')->with('success', 'Utilisateur supprimé');
-    }
-
-    /**
-     * Paramètres système
-     */
-    public function parametres(): string
-    {
-        return view('admin/parametres');
-    }
-
-    /**
-     * Mettre à jour les paramètres
-     */
-    public function updateParametres()
-    {
-        if ($this->request->getMethod() !== 'post') {
-            return redirect()->back();
-        }
-
-        // Validation CSRF est automatique
         $validated = $this->validate([
-            'jours_conges_annuels' => 'required|integer|greater_than[0]',
+            'nom'         => 'required|min_length[2]|max_length[100]|is_unique[departements.nom,id,' . $id . ']',
+            'description' => 'permit_empty|max_length[500]',
         ]);
 
         if (!$validated) {
-            return redirect()->back()->with('errors', $this->validator->getErrors());
+            return redirect()->to('/admin/departement/' . $id . '/edit')
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
         }
 
-        // Mettre à jour les paramètres
-        return redirect()->to('/admin/parametres')->with('success', 'Paramètres mises à jour');
+        $this->departementModel->update($id, [
+            'nom' => $this->request->getPost('nom'),
+            'description' => $this->request->getPost('description'),
+        ]);
+
+        return redirect()->to('/admin/departements')->with('success', 'Département mis à jour');
+    }
+
+    public function deleteDepartement($id)
+    {
+        $employes = $this->employeModel->where('departement_id', $id)->findAll();
+
+        if (!empty($employes)) {
+            return redirect()->to('/admin/departements')->with('error', 'Département utilisé');
+        }
+
+        $this->departementModel->delete($id);
+
+        return redirect()->to('/admin/departements')->with('success', 'Département supprimé');
     }
 }
