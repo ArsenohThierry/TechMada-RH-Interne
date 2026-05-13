@@ -54,4 +54,31 @@ public function getJoursRestants(int $employe_id, int $type_conge_id): int
 
     return $result ? (int) $result['jours_restants'] : 0;
 }
+
+    /**
+     * Retourne la ligne de solde pour un employé/type/année ou null
+     */
+    public function getSolde(int $employe_id, int $type_conge_id, ?int $annee = null): ?array
+    {
+        $annee = $annee ?? (int) date('Y');
+        return $this->where('employe_id', $employe_id)
+                    ->where('type_conge_id', $type_conge_id)
+                    ->where('annee', $annee)
+                    ->first() ?: null;
+    }
+
+    /**
+     * Incrémente `jours_pris` de la ligne de solde (utilise une opération SQL pour être atomique)
+     */
+    public function incrementJoursPris(int $solde_id, int $jours): bool
+    {
+        if ($jours <= 0) return false;
+
+        $db = \Config\Database::connect();
+        $builder = $db->table($this->table);
+
+        return (bool) $builder->set('jours_pris', "jours_pris + {$jours}", false)
+                              ->where('id', $solde_id)
+                              ->update();
+    }
 }

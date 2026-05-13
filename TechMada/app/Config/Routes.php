@@ -11,5 +11,11 @@ $routes->post('/conges/send', 'CongeController::envoyerConges');
 
 $routes->get('/rh/listeDemandes', 'RHController::listeDemandes');
 $routes->get('/rh/home', 'RHController::listeDemandes'); // alias
-$routes->get('/rh/approuver', 'RHController::approuverDemande');
-$routes->get('/rh/refuser', 'RHController::refuserDemande');
+
+// RH actions: approbation / refus / annulation des congés
+$routes->get('/rh/conges/approuver/(:num)', 'RHController::approuverDemande/$1');
+$routes->post('/rh/conges/approuver/(:num)', 'RHController::approuverDemande/$1');
+$routes->post('/rh/conges/refuser/(:num)', 'RHController::refuserDemande/$1');
+$routes->post('/rh/conges/annuler/(:num)', 'RHController::annulerDemande/$1');
+$routes->get('/rh/conges/approuver/(:num)', 'RHController::approuverDemande');
+$routes->get('/rh/conges/refuser/(:num)', 'RHController::refuserDemande');
