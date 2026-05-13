@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solde de congés — MadaTech</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div class="main-content">
+    <div class="page-inner">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Solde de congés</h1>
+          <p class="page-desc">Détail de vos droits et consommation — Année 2025</p>
+        </div>
+        <div class="page-actions">
+          <select class="filter-input">
+            <option>Année 2025</option>
+            <option>Année 2024</option>
+            <option>Année 2023</option>
+          </select>
+          <button class="btn btn-ghost" onclick="showToast('Export','Fiche de congés exportée en PDF.','success')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            Exporter
+          </button>
+        </div>
+      </div>
+
+      <!-- Balance cards -->
+      <div class="grid grid-3 mb-6">
+        <div class="card" style="border-top:3px solid var(--blue);">
+          <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Congés annuels</div>
+                <div style="font-size:2.5rem;font-weight:800;font-family:var(--font-display);color:var(--text);">25</div>
+                <div style="font-size:12px;color:var(--text-muted);">jours restants</div>
+              </div>
+              <div style="width:60px;height:60px;border-radius:50%;background:conic-gradient(var(--blue) 0% 75%, rgba(59,130,246,0.1) 75% 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="width:46px;height:46px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--blue-light);">75%</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--border);">
+              <div style="text-align:center;">
+                <div style="font-size:15px;font-weight:700;color:var(--text);">33</div>
+                <div style="font-size:10px;color:var(--text-muted);">Alloués</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:15px;font-weight:700;color:var(--text);">8</div>
+                <div style="font-size:10px;color:var(--text-muted);">Pris</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:15px;font-weight:700;color:var(--text);">0</div>
+                <div style="font-size:10px;color:var(--text-muted);">En attente</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--rose);">
+          <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">RTT</div>
+                <div style="font-size:2.5rem;font-weight:800;font-family:var(--font-display);color:var(--text);">5</div>
+                <div style="font-size:12px;color:var(--text-muted);">jours restants</div>
+              </div>
+              <div style="width:60px;height:60px;border-radius:50%;background:conic-gradient(var(--rose) 0% 42%, rgba(236,72,153,0.1) 42% 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="width:46px;height:46px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--rose-light);">42%</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--border);">
+              <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">12</div><div style="font-size:10px;color:var(--text-muted);">Alloués</div></div>
+              <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">7</div><div style="font-size:10px;color:var(--text-muted);">Pris</div></div>
+              <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">0</div><div style="font-size:10px;color:var(--text-muted);">En attente</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-top:3px solid var(--success);">
+          <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Congé maladie</div>
+                <div style="font-size:2.5rem;font-weight:800;font-family:var(--font-display);color:var(--text);">27</div>
+                <div style="font-size:12px;color:var(--text-muted);">jours restants</div>
+              </div>
+              <div style="width:60px;height:60px;border-radius:50%;background:conic-gradient(var(--success) 0% 90%, rgba(16,185,129,0.1) 90% 100%);display:flex;align-items:center;justify-content:center;">
+                <div style="width:46px;height:46px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--success);">90%</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--border);">
+              <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">30</div><div style="font-size:10px;color:var(--text-muted);">Alloués</div></div>
+              <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">3</div><div style="font-size:10px;color:var(--text-muted);">Pris</div></div>
+              <div style="text-align:center;"><div style="font-size:15px;font-weight:700;color:var(--text);">0</div><div style="font-size:10px;color:var(--text-muted);">En attente</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional balances -->
+      <div class="grid grid-3 mb-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center gap-3">
+              <div class="stat-icon warning">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="17.5" y1="9" x2="6.5" y2="15"/><line x1="6.5" y1="9" x2="17.5" y2="15"/></svg>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);">Congé sans solde</div>
+                <div style="font-size:1.5rem;font-weight:800;font-family:var(--font-display);">8 <span style="font-size:13px;color:var(--text-muted);font-family:var(--font-body);font-weight:400;">/ 10 j</span></div>
+              </div>
+            </div>
+            <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill warning" data-width="80"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center gap-3">
+              <div class="stat-icon info">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);">Congé exceptionnel</div>
+                <div style="font-size:1.5rem;font-weight:800;font-family:var(--font-display);">3 <span style="font-size:13px;color:var(--text-muted);font-family:var(--font-body);font-weight:400;">/ 3 j</span></div>
+              </div>
+            </div>
+            <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill blue" data-width="100"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center gap-3">
+              <div class="stat-icon rose">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text-muted);">Report N-1</div>
+                <div style="font-size:1.5rem;font-weight:800;font-family:var(--font-display);">4 <span style="font-size:13px;color:var(--text-muted);font-family:var(--font-body);font-weight:400;">j restants</span></div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--warning);margin-top:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline; margin-right:4px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Expire le 31/05/2025
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consumption chart -->
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Consommation mensuelle 2025</div>
+          </div>
+          <div class="card-body">
+            <div id="monthly-chart"></div>
+          </div>
+        </div>
+
+        <!-- History table -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Historique des mouvements</div>
+          </div>
+          <div class="card-body" style="padding-top:0;">
+            <div class="table-wrapper" style="border:none;">
+              <table class="table">
+                <thead>
+                  <tr><th>Date</th><th>Type</th><th>Mouvement</th><th>Solde</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-size:12px;color:var(--text-muted);">16/05/2025</td>
+                    <td><span style="font-size:12px;">Congés annuels</span></td>
+                    <td><span style="color:var(--danger);font-weight:600;font-size:12px;">− 5 j</span></td>
+                    <td><span style="font-weight:700;font-size:13px;">25 j</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;color:var(--text-muted);">01/05/2025</td>
+                    <td><span style="font-size:12px;">Congés annuels</span></td>
+                    <td><span style="color:var(--success);font-weight:600;font-size:12px;">+ 2.5 j</span></td>
+                    <td><span style="font-weight:700;font-size:13px;">30 j</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;color:var(--text-muted);">04/05/2025</td>
+                    <td><span style="font-size:12px;">Congé maladie</span></td>
+                    <td><span style="color:var(--danger);font-weight:600;font-size:12px;">− 2 j</span></td>
+                    <td><span style="font-weight:700;font-size:13px;">27 j</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;color:var(--text-muted);">01/04/2025</td>
+                    <td><span style="font-size:12px;">Congés annuels</span></td>
+                    <td><span style="color:var(--success);font-weight:600;font-size:12px;">+ 2.5 j</span></td>
+                    <td><span style="font-weight:700;font-size:13px;">29 j</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;color:var(--text-muted);">25/04/2025</td>
+                    <td><span style="font-size:12px;">Congés annuels</span></td>
+                    <td><span style="color:var(--danger);font-weight:600;font-size:12px;">− 5 j</span></td>
+                    <td><span style="font-weight:700;font-size:13px;">26.5 j</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/lajout.js"></script>
+<script>
+  renderLayout('employee', 'leave-balance.html', 'Solde de congés');
+
+  renderChartBars([
+    { label: 'Jan', value: 0, color: 'blue' },
+    { label: 'Fév', value: 2, color: 'blue' },
+    { label: 'Mar', value: 3, color: 'rose' },
+    { label: 'Avr', value: 5, color: 'blue' },
+    { label: 'Mai', value: 7, color: 'rose' },
+    { label: 'Juin', value: 0, color: 'blue' },
+    { label: 'Juil', value: 0, color: 'blue' },
+    { label: 'Aoû', value: 0, color: 'blue' },
+    { label: 'Sep', value: 0, color: 'blue' },
+    { label: 'Oct', value: 0, color: 'blue' },
+    { label: 'Nov', value: 0, color: 'blue' },
+    { label: 'Déc', value: 0, color: 'blue' },
+  ], 'monthly-chart');
+</script>
+</body>
+</html>

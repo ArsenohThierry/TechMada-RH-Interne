@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon profil — MadaTech</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div class="main-content">
+    <div class="page-inner">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Mon profil</h1>
+          <p class="page-desc">Gérez vos informations personnelles et votre sécurité</p>
+        </div>
+      </div>
+
+      <!-- Profile content -->
+      <div style="display:grid; grid-template-columns:300px 1fr; gap:24px;">
+
+        <!-- Sidebar profile -->
+        <div>
+          <div class="card">
+            <div class="card-body" style="text-align:center; padding:24px;">
+              <div class="profile-avatar" style="width:120px; height:120px; background:var(--grad-rose); border-radius:var(--radius-lg); display:flex; align-items:center; justify-content:center; font-size:48px; font-weight:700; color:white; margin:0 auto 16px; font-family:var(--font-display);">MD</div>
+              <div class="profile-name" style="font-size:18px; font-weight:700; margin-bottom:4px;">Marie Dupont</div>
+              <div class="profile-role" style="font-size:13px; color:var(--text-sec); margin-bottom:16px;">Développeuse Senior</div>
+              <div class="profile-status" style="display:inline-block; padding:6px 12px; background:var(--success-bg); color:var(--success); border-radius:6px; font-size:11px; font-weight:600;">● Actif</div>
+              
+              <div style="border-top:1px solid var(--border); margin:16px 0; padding-top:16px;">
+                <div style="text-align:left;">
+                  <div style="font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Informations</div>
+                  <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
+                    <div><span style="color:var(--text-sec);">Email:</span><br><span style="color:var(--text);">marie.dupont@hira.fr</span></div>
+                    <div><span style="color:var(--text-sec);">Département:</span><br><span style="color:var(--text);">Développement</span></div>
+                    <div><span style="color:var(--text-sec);">Manager:</span><br><span style="color:var(--text);">Jean Moreau</span></div>
+                    <div><span style="color:var(--text-sec);">Date d'arrivée:</span><br><span style="color:var(--text);">15 janvier 2022</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main content -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+
+          <!-- Informations personnelles -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Informations personnelles</div>
+                <div class="card-subtitle">Mettez à jour vos informations de profil</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                <!-- Prénom -->
+                <div class="form-group">
+                  <label class="form-label">Prénom <span>*</span></label>
+                  <input type="text" class="form-control" placeholder="Marie" value="Marie">
+                </div>
+
+                <!-- Nom -->
+                <div class="form-group">
+                  <label class="form-label">Nom <span>*</span></label>
+                  <input type="text" class="form-control" placeholder="Dupont" value="Dupont">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                  <label class="form-label">Adresse email <span>*</span></label>
+                  <input type="email" class="form-control" placeholder="marie@example.com" value="marie.dupont@hira.fr">
+                </div>
+
+                <!-- Téléphone -->
+                <div class="form-group">
+                  <label class="form-label">Téléphone</label>
+                  <input type="tel" class="form-control" placeholder="+33 6 12 34 56 78" value="+33 6 45 23 89 01">
+                </div>
+
+                <!-- Genre -->
+                <div class="form-group">
+                  <label class="form-label">Genre</label>
+                  <select class="form-control">
+                    <option>Femme</option>
+                    <option>Homme</option>
+                    <option>Autre</option>
+                  </select>
+                </div>
+
+                <!-- Date de naissance -->
+                <div class="form-group">
+                  <label class="form-label">Date de naissance</label>
+                  <input type="date" class="form-control" value="1994-03-15">
+                </div>
+
+                <!-- Adresse -->
+                <div class="form-group" style="grid-column:1/-1;">
+                  <label class="form-label">Adresse</label>
+                  <input type="text" class="form-control" placeholder="123 Rue de la Paix" value="45 Boulevard Saint-Germain">
+                </div>
+
+                <!-- Code postal -->
+                <div class="form-group">
+                  <label class="form-label">Code postal</label>
+                  <input type="text" class="form-control" placeholder="75000" value="75005">
+                </div>
+
+                <!-- Ville -->
+                <div class="form-group">
+                  <label class="form-label">Ville</label>
+                  <input type="text" class="form-control" placeholder="Paris" value="Paris">
+                </div>
+
+                <!-- Pays -->
+                <div class="form-group">
+                  <label class="form-label">Pays</label>
+                  <input type="text" class="form-control" placeholder="France" value="France">
+                </div>
+
+                <!-- Photo de profil -->
+                <div class="form-group" style="grid-column:1/-1;">
+                  <label class="form-label">Photo de profil</label>
+                  <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <div style="width:80px; height:80px; background:var(--grad-rose); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; color:white; flex-shrink:0; font-family:var(--font-display);">MD</div>
+                    <div style="flex:1;">
+                      <input type="file" class="form-control" style="padding:10px; cursor:pointer;">
+                      <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">PNG, JPG jusqu'à 2MB</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit -->
+                <div style="grid-column:1/-1; display:flex; gap:12px; justify-content:flex-end; margin-top:12px;">
+                  <button type="reset" class="btn btn-ghost">Annuler</button>
+                  <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Préférences -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Préférences</div>
+                <div class="card-subtitle">Personnalisez votre expérience</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                <!-- Langue -->
+                <div class="form-group">
+                  <label class="form-label">Langue</label>
+                  <select class="form-control">
+                    <option>Français</option>
+                    <option>English</option>
+                    <option>Español</option>
+                  </select>
+                </div>
+
+                <!-- Fuseau horaire -->
+                <div class="form-group">
+                  <label class="form-label">Fuseau horaire</label>
+                  <select class="form-control">
+                    <option>UTC+1 (Europe/Paris)</option>
+                    <option>UTC+0 (Europe/London)</option>
+                    <option>UTC+2 (Europe/Berlin)</option>
+                  </select>
+                </div>
+
+                <!-- Notifications email -->
+                <div style="grid-column:1/-1;">
+                  <label class="form-label" style="margin-bottom:12px;">Notifications</label>
+                  <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="display:flex; align-items:center; gap:12px; padding:12px; background:rgba(59,130,246,0.05); border-radius:var(--radius);">
+                      <div class="custom-check checked" id="notif-email"></div>
+                      <label for="notif-email" style="cursor:pointer; flex:1; margin:0;">
+                        <div style="font-size:14px; font-weight:600;">Notifications par email</div>
+                        <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Recevoir les mises à jour importantes</div>
+                      </label>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; padding:12px; background:rgba(59,130,246,0.05); border-radius:var(--radius);">
+                      <div class="custom-check checked" id="notif-request"></div>
+                      <label for="notif-request" style="cursor:pointer; flex:1; margin:0;">
+                        <div style="font-size:14px; font-weight:600;">Notifications des demandes</div>
+                        <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Alertes sur l'état de vos demandes</div>
+                      </label>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; padding:12px; background:rgba(59,130,246,0.05); border-radius:var(--radius);">
+                      <div class="custom-check" id="notif-news"></div>
+                      <label for="notif-news" style="cursor:pointer; flex:1; margin:0;">
+                        <div style="font-size:14px; font-weight:600;">Infolettre</div>
+                        <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Actualités et mises à jour du produit</div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit -->
+                <div style="grid-column:1/-1; display:flex; gap:12px; justify-content:flex-end; margin-top:12px;">
+                  <button type="submit" class="btn btn-primary">Mettre à jour les préférences</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Changer le mot de passe -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Sécurité</div>
+                <div class="card-subtitle">Protégez votre compte</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form style="display:grid; grid-template-columns:1fr; gap:20px;">
+                <!-- Mot de passe actuel -->
+                <div class="form-group">
+                  <label class="form-label">Mot de passe actuel <span>*</span></label>
+                  <input type="password" class="form-control" placeholder="••••••••">
+                </div>
+
+                <!-- Nouveau mot de passe -->
+                <div class="form-group">
+                  <label class="form-label">Nouveau mot de passe <span>*</span></label>
+                  <input type="password" class="form-control" placeholder="••••••••">
+                  <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">
+                    <p style="margin:0;">Minimum 12 caractères</p>
+                    <p style="margin:4px 0 0 0;">Inclure majuscules, minuscules, chiffres et symboles</p>
+                  </div>
+                </div>
+
+                <!-- Confirmer le mot de passe -->
+                <div class="form-group">
+                  <label class="form-label">Confirmer le mot de passe <span>*</span></label>
+                  <input type="password" class="form-control" placeholder="••••••••">
+                </div>
+
+                <!-- Indicateur de force -->
+                <div style="padding:12px; background:var(--card); border-radius:var(--radius); border:1px solid var(--border);">
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <div style="font-size:12px; font-weight:600; color:var(--text-sec);">Force du mot de passe</div>
+                    <div style="flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden;">
+                      <div style="width:75%; height:100%; background:var(--success);"></div>
+                    </div>
+                    <div style="font-size:11px; color:var(--success); font-weight:600;">Bon</div>
+                  </div>
+                  <ul style="font-size:12px; color:var(--text-sec); margin:0; padding-left:16px;">
+                    <li style="margin-bottom:4px;">✓ 12+ caractères</li>
+                    <li style="margin-bottom:4px;">✗ Majuscules</li>
+                    <li>✓ Chiffres et symboles</li>
+                  </ul>
+                </div>
+
+                <!-- Actions de sécurité additionnelles -->
+                <div style="border-top:1px solid var(--border); padding-top:16px;">
+                  <div style="font-size:12px; font-weight:600; color:var(--text-sec); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:16px;">Autres actions de sécurité</div>
+                  <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--card-hover); border-radius:var(--radius);">
+                      <div>
+                        <div style="font-size:14px; font-weight:600; color:var(--text);">Authentification à deux facteurs</div>
+                        <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Sécurisez votre compte avec 2FA</div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-card">Configurer</button>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--card-hover); border-radius:var(--radius);">
+                      <div>
+                        <div style="font-size:14px; font-weight:600; color:var(--text);">Sessions actives</div>
+                        <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Gérez vos appareils connectés</div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-card">Voir</button>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--card-hover); border-radius:var(--radius);">
+                      <div>
+                        <div style="font-size:14px; font-weight:600; color:var(--text);">Historique de connexion</div>
+                        <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Consultez vos accès récents</div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-card">Consulter</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit -->
+                <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:12px;">
+                  <button type="reset" class="btn btn-ghost">Annuler</button>
+                  <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Dangerzone -->
+          <div class="card" style="border:1px solid rgba(239,68,68,0.2);">
+            <div class="card-header" style="background:rgba(239,68,68,0.08);">
+              <div>
+                <div class="card-title" style="color:var(--danger);">Zone de danger</div>
+                <div class="card-subtitle">Actions irréversibles</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-size:14px; font-weight:600; color:var(--text);">Supprimer le compte</div>
+                  <div style="font-size:12px; color:var(--text-sec); margin-top:2px;">Supprime définitivement votre profil et vos données</div>
+                </div>
+                <button type="button" class="btn btn-danger" data-modal-open="modal-delete-account">Supprimer</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal-overlay" id="modal-delete-account">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Supprimer mon compte</h2>
+      <button class="modal-close" data-modal-close="modal-delete-account">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="margin:0 0 12px 0; color:var(--text-sec);">Cette action est irréversible. Toutes vos données seront supprimées définitivement.</p>
+      <div style="padding:12px; background:var(--danger-bg); border:1px solid rgba(239,68,68,0.2); border-radius:var(--radius); font-size:13px; color:var(--danger); line-height:1.5;">
+        <strong>⚠ Attention :</strong> Vous perdrez accès à toutes vos demandes de congés, votre historique et vos informations de profil.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-modal-close="modal-delete-account">Annuler</button>
+      <button class="btn btn-danger">Oui, supprimer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/lajout.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+  // Initialiser le layout
+  renderLayout('employee', 'profile.html', 'Mon profil');
+
+  // Toggle les checkboxes
+  document.querySelectorAll('.custom-check').forEach(elem => {
+    elem.addEventListener('click', function() {
+      this.classList.toggle('checked');
+    });
+  });
+</script>
+</body>
+</html>

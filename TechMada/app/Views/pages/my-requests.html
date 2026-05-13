@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes demandes — MadaTech</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div class="main-content">
+    <div class="page-inner">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Mes demandes</h1>
+          <p class="page-desc">Historique de toutes vos demandes de congé</p>
+        </div>
+        <div class="page-actions">
+          <a href="new-request.html" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouvelle demande
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-4 mb-6">
+        <div class="stat-card blue">
+          <div class="stat-icon blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </div>
+          <div class="stat-value" data-count="14">0</div>
+          <div class="stat-label">Total demandes</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-icon success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="stat-value" data-count="10">0</div>
+          <div class="stat-label">Approuvées</div>
+        </div>
+        <div class="stat-card rose">
+          <div class="stat-icon rose">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="stat-value" data-count="2">0</div>
+          <div class="stat-label">En attente</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon warning">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+          <div class="stat-value" data-count="2">0</div>
+          <div class="stat-label">Refusées</div>
+        </div>
+      </div>
+
+      <!-- Tabs + Filters -->
+      <div class="flex items-center gap-3 mb-5" style="flex-wrap:wrap;">
+        <div class="tabs">
+          <div class="tab active" data-tab="all">Toutes (14)</div>
+          <div class="tab" data-tab="pending">En attente (2)</div>
+          <div class="tab" data-tab="approved">Approuvées (10)</div>
+          <div class="tab" data-tab="rejected">Refusées (2)</div>
+        </div>
+        <div class="ml-auto flex gap-2">
+          <select class="filter-input" style="font-size:12.5px;">
+            <option>Toute l'année</option>
+            <option>2025</option>
+            <option>2024</option>
+          </select>
+          <select class="filter-input" style="font-size:12.5px;">
+            <option>Tous types</option>
+            <option>Congés annuels</option>
+            <option>RTT</option>
+            <option>Maladie</option>
+          </select>
+          <button class="btn btn-ghost btn-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="8 17 3 12 8 7"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+            Exporter
+          </button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card" style="overflow:hidden;">
+        <div class="table-wrapper" style="border:none;border-radius:0;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  <div class="custom-check" onclick="this.classList.toggle('checked')"></div>
+                </th>
+                <th>Type de congé</th>
+                <th>Période</th>
+                <th>Durée</th>
+                <th>Statut</th>
+                <th>Responsable</th>
+                <th>Soumis le</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="custom-check" onclick="this.classList.toggle('checked')"></div></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;"></span>
+                    <span style="color:var(--text);font-weight:500;">Congés annuels</span>
+                  </div>
+                </td>
+                <td>12 – 16 mai 2025</td>
+                <td><span class="badge badge-blue">5 jours</span></td>
+                <td><span class="badge badge-approved">Approuvé</span></td>
+                <td><span style="font-size:12px;">Sophie Laurent</span></td>
+                <td style="font-size:12px;color:var(--text-muted);">02/05/2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" title="Voir" onclick="openModal('modal-detail')">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button class="btn btn-danger btn-sm" style="font-size:11px;" onclick="showToast('Non disponible', 'Cette demande est déjà approuvée.','warning')">Annuler</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><div class="custom-check" onclick="this.classList.toggle('checked')"></div></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0;"></span>
+                    <span style="color:var(--text);font-weight:500;">RTT</span>
+                  </div>
+                </td>
+                <td>8 mai 2025</td>
+                <td><span class="badge badge-blue">1 jour</span></td>
+                <td><span class="badge badge-rejected">Refusé</span></td>
+                <td><span style="font-size:12px;">Sophie Laurent</span></td>
+                <td style="font-size:12px;color:var(--text-muted);">28/04/2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" title="Voir" onclick="openModal('modal-detail')">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button class="btn btn-card btn-sm" style="font-size:11px;" onclick="window.location='new-request.html'">Re-soumettre</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><div class="custom-check" onclick="this.classList.toggle('checked')"></div></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--warning);flex-shrink:0;"></span>
+                    <span style="color:var(--text);font-weight:500;">Congé sans solde</span>
+                  </div>
+                </td>
+                <td>1 – 2 avr. 2025</td>
+                <td><span class="badge badge-blue">2 jours</span></td>
+                <td><span class="badge badge-pending">En attente</span></td>
+                <td><span style="font-size:12px;">Sophie Laurent</span></td>
+                <td style="font-size:12px;color:var(--text-muted);">25/04/2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" title="Voir" onclick="openModal('modal-detail')">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button class="btn btn-danger btn-sm" style="font-size:11px;" onclick="cancelRequest(this)">Annuler</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><div class="custom-check" onclick="this.classList.toggle('checked')"></div></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0;"></span>
+                    <span style="color:var(--text);font-weight:500;">Congés annuels</span>
+                  </div>
+                </td>
+                <td>21 – 25 avr. 2025</td>
+                <td><span class="badge badge-blue">5 jours</span></td>
+                <td><span class="badge badge-approved">Approuvé</span></td>
+                <td><span style="font-size:12px;">Sophie Laurent</span></td>
+                <td style="font-size:12px;color:var(--text-muted);">10/04/2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" onclick="openModal('modal-detail')">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><div class="custom-check" onclick="this.classList.toggle('checked')"></div></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--info);flex-shrink:0;"></span>
+                    <span style="color:var(--text);font-weight:500;">Congé maladie</span>
+                  </div>
+                </td>
+                <td>3 – 4 mars 2025</td>
+                <td><span class="badge badge-blue">2 jours</span></td>
+                <td><span class="badge badge-approved">Approuvé</span></td>
+                <td><span style="font-size:12px;">Sophie Laurent</span></td>
+                <td style="font-size:12px;color:var(--text-muted);">03/03/2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" onclick="openModal('modal-detail')">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><div class="custom-check" onclick="this.classList.toggle('checked')"></div></td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;"></span>
+                    <span style="color:var(--text);font-weight:500;">Congés annuels</span>
+                  </div>
+                </td>
+                <td>27 janv. – 7 fév. 2025</td>
+                <td><span class="badge badge-blue">10 jours</span></td>
+                <td><span class="badge badge-pending">En attente</span></td>
+                <td><span style="font-size:12px;">Sophie Laurent</span></td>
+                <td style="font-size:12px;color:var(--text-muted);">15/01/2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" onclick="openModal('modal-detail')">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button class="btn btn-ghost btn-sm" style="font-size:11px;" onclick="window.location='new-request.html'">Modifier</button>
+                    <button class="btn btn-danger btn-sm" style="font-size:11px;" onclick="cancelRequest(this)">Annuler</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div style="padding:12px 20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:12px;color:var(--text-muted);">Affichage 1-6 sur 14 demandes</span>
+          <div class="pagination">
+            <div class="page-item">‹</div>
+            <div class="page-item active">1</div>
+            <div class="page-item">2</div>
+            <div class="page-item">3</div>
+            <div class="page-item dots">…</div>
+            <div class="page-item">›</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Détails de la demande</h3>
+      <div class="modal-close" onclick="closeModal('modal-detail')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">TYPE</div><div style="font-weight:600;">Congés annuels</div></div>
+        <div><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">STATUT</div><span class="badge badge-approved">Approuvé</span></div>
+        <div><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">DÉBUT</div><div style="font-weight:600;">12 mai 2025</div></div>
+        <div><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">FIN</div><div style="font-weight:600;">16 mai 2025</div></div>
+        <div><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">DURÉE</div><div style="font-weight:600;">5 jours ouvrés</div></div>
+        <div><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">SOUMIS LE</div><div style="font-weight:600;">02 mai 2025</div></div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">VALIDATEUR</div>
+      <div class="flex items-center gap-2 mb-4">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--grad-blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">SL</div>
+        <span style="font-size:13px;font-weight:500;">Sophie Laurent</span>
+        <span class="badge badge-approved" style="margin-left:auto;">Approuvé le 03/05/2025</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">COMMENTAIRE</div>
+      <div style="background:var(--surface);border-radius:8px;padding:12px;font-size:13px;color:var(--text-sec);">Aucun commentaire</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-detail')">Fermer</button>
+      <button class="btn btn-primary btn-sm" onclick="showToast('PDF généré','Le PDF de votre demande a été téléchargé.','success');closeModal('modal-detail')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; margin-right: 4px; vertical-align: middle;"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> Exporter PDF</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/lajout.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+  renderLayout('employee', 'my-requests.html', 'Mes demandes');
+
+  function cancelRequest(btn) {
+    const row = btn.closest('tr');
+    const badge = row.querySelector('.badge');
+    if (badge) { badge.className = 'badge badge-rejected'; badge.textContent = 'Annulé'; }
+    btn.remove();
+    showToast('Demande annulée', 'Votre demande a été annulée avec succès.', 'info');
+  }
+</script>
+</body>
+</html>
