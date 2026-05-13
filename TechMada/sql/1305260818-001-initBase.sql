@@ -160,31 +160,32 @@ INSERT INTO employes (nom, prenom, email, password, role, departement_id, date_e
     ('Ramaroson', 'Bob',     'bob.ramaroson@techmada.mg',
      '$2y$10$hashed_bob_password',    'employe', 1, '2021-09-10');
 
--- Soldes 2025
+-- Soldes 2026
 -- Alice : 30 annuel (10 pris), 15 maladie (0 pris)
 INSERT INTO soldes (employe_id, type_conge_id, annee, jours_attribues, jours_pris) VALUES
-    (3, 1, 2025, 30, 10),
-    (3, 2, 2025, 15,  0),
-    (3, 3, 2025, 10,  0);
+    (3, 1, 2026, 30, 10),
+    (3, 2, 2026, 15,  0),
+    (3, 3, 2026, 10,  0);
 
 -- Bob : 30 annuel (28 pris), 15 maladie (15 pris — épuisé)
 INSERT INTO soldes (employe_id, type_conge_id, annee, jours_attribues, jours_pris) VALUES
-    (4, 1, 2025, 30, 28),
-    (4, 2, 2025, 15, 15),
-    (4, 3, 2025, 10,  0);
+    (4, 1, 2026, 30, 28),
+    (4, 2, 2026, 15, 15),
+    (4, 3, 2026, 10,  0);
+
 
 -- Demandes de congé
 INSERT INTO conges (employe_id, type_conge_id, date_debut, date_fin, nb_jours, motif, statut, traite_par, created_at) VALUES
     -- Alice : annuel approuvé (10j)
-    (3, 1, '2025-03-01', '2025-03-10', 10, 'Vacances famille',   'approuvee', 2, '2025-02-20'),
+    (3, 1, '2026-03-01', '2026-03-10', 10, 'Vacances famille',   'approuvee', 2, '2026-02-20'),
     -- Bob : annuel approuvé (28j)
-    (4, 1, '2025-01-15', '2025-02-11', 28, 'Congé annuel',       'approuvee', 2, '2025-01-10'),
+    (4, 1, '2026-01-15', '2026-02-11', 28, 'Congé annuel',       'approuvee', 2, '2026-01-10'),
     -- Alice : annuel en attente (10j)
-    (3, 1, '2025-06-20', '2025-06-29', 10, 'Voyage',             'en_attente', NULL, '2025-06-01'),
+    (3, 1, '2026-06-20', '2026-06-29', 10, 'Voyage',             'en_attente', NULL, '2026-06-01'),
     -- Bob : maladie refusée (solde épuisé)
-    (4, 2, '2025-04-01', '2025-04-05',  5, 'Grippe',             'refusee', 2, '2025-03-31'),
+    (4, 2, '2026-04-01', '2026-04-05',  5, 'Grippe',             'refusee', 2, '2026-03-31'),
     -- Alice : sans solde annulée
-    (3, 3, '2025-05-10', '2025-05-12',  3, 'Affaire personnelle','annulee', NULL, '2025-05-01');
+    (3, 3, '2026-05-10', '2026-05-12',  3, 'Affaire personnelle','annulee', NULL, '2026-05-01');
 
 -- Commentaire RH sur le refus de Bob
 UPDATE conges SET commentaire_rh = 'Solde maladie insuffisant (0 jours restants)' WHERE id = 4;

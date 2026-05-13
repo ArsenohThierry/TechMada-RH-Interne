@@ -1,0 +1,11 @@
+# Ignore writable runtime files
+/writable/logs/
+/writable/session/
+
+# Optional: other runtime artifacts
+/writable/cache/
+/writable/debugbar/
+/writable/uploads/
+
+# Composer vendor (uncomment if needed)
+#/vendor/

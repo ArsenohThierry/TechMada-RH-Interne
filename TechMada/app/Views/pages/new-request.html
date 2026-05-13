@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvelle demande — MadaTech</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div class="main-content">
+    <div class="page-inner">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Nouvelle demande de congé</h1>
+          <p class="page-desc">Remplissez le formulaire ci-dessous et soumettez votre demande au responsable RH</p>
+        </div>
+        <div class="page-actions">
+          <a href="my-requests.html" class="btn btn-ghost">Voir mes demandes</a>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 320px; gap:24px; align-items:start;">
+
+        <!-- Form card -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Informations de la demande</div>
+              <div class="card-subtitle">Tous les champs obligatoires sont marqués *</div>
+            </div>
+          </div>
+          <div class="card-body">
+
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label class="form-label">Type de congé <span>*</span></label>
+                <select class="form-control" id="leave-type" onchange="updateBalance()">
+                  <option value="">— Choisir un type —</option>
+                  <option value="annual" selected>Congés annuels</option>
+                  <option value="rtt">RTT</option>
+                  <option value="sick">Congé maladie</option>
+                  <option value="unpaid">Congé sans solde</option>
+                  <option value="maternity">Congé maternité</option>
+                  <option value="paternity">Congé paternité</option>
+                  <option value="bereavement">Congé de deuil</option>
+                  <option value="wedding">Congé mariage</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Priorité</label>
+                <select class="form-control">
+                  <option>Normal</option>
+                  <option>Urgent</option>
+                  <option>Faible</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label class="form-label">Date de début <span>*</span></label>
+                <input type="date" class="form-control" id="start-date" value="2025-05-19" onchange="computeDays()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date de fin <span>*</span></label>
+                <input type="date" class="form-control" id="end-date" value="2025-05-23" onchange="computeDays()">
+              </div>
+            </div>
+
+            <div class="form-row form-row-2 mb-3">
+              <div>
+                <label class="form-label">Demi-journée début</label>
+                <select class="form-control">
+                  <option>Journée entière</option>
+                  <option>Matin seulement</option>
+                  <option>Après-midi seulement</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Demi-journée fin</label>
+                <select class="form-control">
+                  <option>Journée entière</option>
+                  <option>Matin seulement</option>
+                  <option>Après-midi seulement</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Duration display -->
+            <div id="duration-box" style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+              <span style="font-size:24px; display:flex;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </span>
+              <div>
+                <div style="font-size:13px;color:var(--text-muted);">Durée de l'absence</div>
+                <div style="font-size:22px;font-weight:800;font-family:var(--font-display);color:var(--blue-light);" id="days-count">5</div>
+                <div style="font-size:11px;color:var(--text-muted);">jours ouvrés (hors jours fériés)</div>
+              </div>
+              <div style="margin-left:auto;text-align:right;">
+                <div style="font-size:12px;color:var(--text-muted);">Solde restant après</div>
+                <div style="font-size:18px;font-weight:700;color:var(--success);" id="remaining-after">20 j</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Responsable de remplacement</label>
+              <select class="form-control">
+                <option value="">— Optionnel —</option>
+                <option>Lucas Martin</option>
+                <option>Clara Bernard</option>
+                <option>Paul Lefèvre</option>
+                <option>Emma Girard</option>
+              </select>
+              <div class="form-hint">Désignez un collègue qui prendra vos responsabilités pendant votre absence</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Motif / Commentaire</label>
+              <textarea class="form-control" rows="4" placeholder="Décrivez brièvement le motif de votre demande (optionnel)..."></textarea>
+              <div class="form-hint">Maximum 500 caractères</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Pièce jointe</label>
+              <div style="border:2px dashed var(--border-md);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all var(--t-fast);background:rgba(255,255,255,0.02);" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border-md)'">
+                <div style="font-size:28px;margin-bottom:8px; display:flex; justify-content:center;">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 0 19.8 4.3M22 12.5a10 10 0 0 0-19.8-4.2"/></svg>
+                </div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-sec);">Glisser-déposer ou cliquer</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">PDF, JPG, PNG — max 5 Mo</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="flex gap-3 justify-end">
+              <button class="btn btn-ghost" onclick="saveDraft()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Sauvegarder brouillon
+              </button>
+              <button class="btn btn-primary" onclick="submitRequest()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Soumettre la demande
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right sidebar -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- My balances -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">Mes soldes</div></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div style="padding:12px;border-radius:8px;background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.1);" id="balance-annual">
+                  <div class="flex items-center justify-between mb-2">
+                    <span style="font-size:12px;color:var(--text-muted);">Congés annuels</span>
+                    <span style="font-size:16px;font-weight:800;color:var(--blue-light);">25 j</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill blue" data-width="75"></div></div>
+                  <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">33 jours alloués</div>
+                </div>
+                <div style="padding:12px;border-radius:8px;background:rgba(236,72,153,0.06);border:1px solid rgba(236,72,153,0.1);">
+                  <div class="flex items-center justify-between mb-2">
+                    <span style="font-size:12px;color:var(--text-muted);">RTT</span>
+                    <span style="font-size:16px;font-weight:800;color:var(--rose-light);">5 j</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill rose" data-width="42"></div></div>
+                  <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">12 jours alloués</div>
+                </div>
+                <div style="padding:12px;border-radius:8px;background:var(--success-bg);border:1px solid rgba(16,185,129,0.1);">
+                  <div class="flex items-center justify-between mb-2">
+                    <span style="font-size:12px;color:var(--text-muted);">Maladie</span>
+                    <span style="font-size:16px;font-weight:800;color:var(--success);">27 j</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill success" data-width="90"></div></div>
+                  <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">30 jours alloués</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming public holidays -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">Prochains jours fériés</div></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+              <div class="flex items-center gap-3">
+                <div style="background:var(--warning-bg);border-radius:8px;padding:8px 12px;text-align:center;min-width:44px;">
+                  <div style="font-size:10px;color:var(--warning);font-weight:700;">MAI</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--text);">29</div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:500;color:var(--text);">Ascension</div>
+                  <div style="font-size:11px;color:var(--text-muted);">Jeudi · Férié national</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div style="background:var(--warning-bg);border-radius:8px;padding:8px 12px;text-align:center;min-width:44px;">
+                  <div style="font-size:10px;color:var(--warning);font-weight:700;">JUIN</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--text);">09</div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:500;color:var(--text);">Lundi de Pentecôte</div>
+                  <div style="font-size:11px;color:var(--text-muted);">Lundi · Férié national</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div style="background:var(--warning-bg);border-radius:8px;padding:8px 12px;text-align:center;min-width:44px;">
+                  <div style="font-size:10px;color:var(--warning);font-weight:700;">JUIL</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--text);">14</div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:500;color:var(--text);">Fête Nationale</div>
+                  <div style="font-size:11px;color:var(--text-muted);">Lundi · Férié national</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div style="background:var(--info-bg);border:1px solid rgba(6,182,212,0.15);border-radius:12px;padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--info);margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Délai de validation
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">Les demandes sont traitées sous <strong style="color:var(--text-sec)">48h ouvrées</strong>. Vous serez notifié par email dès la décision.</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="modal-success">
+  <div class="modal">
+    <div class="modal-body" style="text-align:center;padding:40px 32px;">
+      <div style="font-size:52px;margin-bottom:16px;">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3 style="font-size:1.2rem;margin-bottom:8px;">Demande envoyée !</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px;">Votre demande de congé a bien été soumise et est en attente de validation par votre responsable RH.</p>
+      <div class="flex gap-3 justify-end" style="justify-content:center;">
+        <a href="my-requests.html" class="btn btn-primary">Voir mes demandes</a>
+        <button class="btn btn-ghost" onclick="closeModal('modal-success')">Nouvelle demande</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/lajout.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+  renderLayout('employee', 'new-request.html', 'Nouvelle demande');
+
+  function computeDays() {
+    const start = new Date(document.getElementById('start-date').value);
+    const end   = new Date(document.getElementById('end-date').value);
+    if (!start || !end || end < start) return;
+    const diff = Math.round((end - start) / (1000*60*60*24)) + 1;
+    const weekdays = Array.from({length: diff}, (_, i) => {
+      const d = new Date(start); d.setDate(d.getDate() + i);
+      return d.getDay() !== 0 && d.getDay() !== 6;
+    }).filter(Boolean).length;
+    document.getElementById('days-count').textContent = weekdays;
+    document.getElementById('remaining-after').textContent = (25 - weekdays) + ' j';
+  }
+
+  function updateBalance() {
+    // visual feedback only
+  }
+
+  function saveDraft() {
+    showToast('Brouillon sauvegardé', 'Votre demande a été enregistrée.', 'info');
+  }
+
+  function submitRequest() {
+    openModal('modal-success');
+  }
+</script>
+</body>
+</html>
