@@ -301,7 +301,7 @@
                             <!-- Approuver -->
                             <form method="POST" action="/rh/conges/approuver/<?= $c['id'] ?>">
                                 <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
-                                <button class="btn-approuver"
+                                <button type="submit" class="btn-approuver"
                                         onclick="return confirm('Approuver cette demande ?')">
                                     Approuver
                                 </button>

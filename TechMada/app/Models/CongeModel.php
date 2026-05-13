@@ -98,4 +98,17 @@ class CongeModel extends Model
 
         return $builder->findAll();
     }
+
+    /**
+     * Marque une demande comme approuvée et enregistre l'identifiant du RH qui la traite.
+     */
+    public function approveConge(int $id, ?int $traite_par = null): bool
+    {
+        $data = [
+            'statut' => 'approuvee',
+            'traite_par' => $traite_par,
+        ];
+
+        return (bool) $this->update($id, $data);
+    }
 }
