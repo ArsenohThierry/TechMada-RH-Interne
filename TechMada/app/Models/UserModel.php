@@ -40,7 +40,11 @@ class UserModel extends Model
             throw new \Exception('Erreur lors du hachage du mot de passe');
         }
 
-        return $this->insert([
+        // Utiliser une transaction pour s'assurer que l'insertion de l'utilisateur
+        // et l'initialisation des soldes sont atomiques.
+        $this->db->transStart();
+
+        $insertId = $this->insert([
             'email'          => $email,
             'password'       => $hashed_password,
             'nom'            => $nom,
@@ -49,6 +53,36 @@ class UserModel extends Model
             'role'           => 'employe',
             'date_embauche'  => date('Y-m-d'),
         ]);
+
+        if (! $insertId) {
+            $this->db->transComplete();
+            return false;
+        }
+
+        // Par défaut : Congé annuel (type_conge_id = 1) => 30 jours
+        //             Congé maladie  (type_conge_id = 2) => 15 jours
+        $annee = (int) date('Y');
+
+        $soldesTable = $this->db->table('soldes');
+        $soldesTable->insert([
+            'employe_id'     => $insertId,
+            'type_conge_id'  => 1,
+            'annee'          => $annee,
+            'jours_attribues' => 30,
+            'jours_pris'      => 0,
+        ]);
+
+        $soldesTable->insert([
+            'employe_id'     => $insertId,
+            'type_conge_id'  => 2,
+            'annee'          => $annee,
+            'jours_attribues' => 15,
+            'jours_pris'      => 0,
+        ]);
+
+        $this->db->transComplete();
+
+        return $this->db->transStatus();
     }
 
     /**

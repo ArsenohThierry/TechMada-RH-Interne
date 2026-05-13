@@ -44,12 +44,14 @@ class SoldeModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-public function getJoursRestants(int $employe_id, int $type_conge_id): int
+public function getJoursRestants(int $employe_id, int $type_conge_id, ?int $annee = null): int
 {
+    $annee = $annee ?? (int) date('Y');
+
     $result = $this->select('jours_attribues - jours_pris AS jours_restants', false)
                    ->where('employe_id',    $employe_id)
                    ->where('type_conge_id', $type_conge_id)
-                   ->where('annee',         (int) date('Y'))
+                   ->where('annee',         $annee)
                    ->first();
 
     return $result ? (int) $result['jours_restants'] : 0;

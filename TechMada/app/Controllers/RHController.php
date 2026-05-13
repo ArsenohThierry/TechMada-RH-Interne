@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\CongeModel;
 use App\Models\SoldeModel;
 use App\Models\TypeCongeModel;
+use App\Models\DepartementsModel;
 
 class RHController extends BaseController
 {
@@ -14,10 +15,13 @@ class RHController extends BaseController
     {
         $congeModel = new CongeModel();
         $tous   = $congeModel->getAllAvecFiltres(); // charger toutes les données pour filtrage JS
+        // Récupérer la liste des départements pour le filtre
+        $departementModel = new DepartementsModel();
+        $departements = $departementModel->findAllDepartements();
 
         $data = [
             'conges'         => $tous,
-            'departements'   => [],
+            'departements'   => $departements,
             'filtre_statut'  => '',
             'filtre_dept'    => '',
             'nb_en_attente'  => count(array_filter($tous, fn($c) => $c['statut'] === 'en_attente')),
@@ -45,13 +49,14 @@ class RHController extends BaseController
         $typeId = (int) $conge['type_conge_id'];
         $employeId = (int) $conge['employe_id'];
         $nbJours = (int) $conge['nb_jours'];
+        $anneeDemande = (int) date('Y', strtotime($conge['date_debut']));
 
         $typeCongeModel = new TypeCongeModel();
         $typeConge = $typeCongeModel->find($typeId);
 
         if ($typeConge && $typeConge['deductible']) {
             $soldeModel = new SoldeModel();
-            $solde = $soldeModel->getSolde($employeId, $typeId);
+            $solde = $soldeModel->getSolde($employeId, $typeId, $anneeDemande);
 
             if (! $solde) {
                 return redirect()->to('/rh/listeDemandes')->with('error', 'Solde introuvable pour cet employé et type de congé.');
@@ -125,6 +130,7 @@ class RHController extends BaseController
         $typeId = (int) $conge['type_conge_id'];
         $employeId = (int) $conge['employe_id'];
         $nbJours = (int) $conge['nb_jours'];
+        $anneeDemande = (int) date('Y', strtotime($conge['date_debut']));
 
         $typeCongeModel = new TypeCongeModel();
         $typeConge = $typeCongeModel->find($typeId);
@@ -132,7 +138,7 @@ class RHController extends BaseController
         // If deductible, decrement jours_pris to refund days
         if ($typeConge && $typeConge['deductible']) {
             $soldeModel = new SoldeModel();
-            $solde = $soldeModel->getSolde($employeId, $typeId);
+            $solde = $soldeModel->getSolde($employeId, $typeId, $anneeDemande);
 
             if ($solde) {
                 // Decrement jours_pris

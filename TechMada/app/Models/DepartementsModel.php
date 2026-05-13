@@ -43,4 +43,8 @@ class DepartementsModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findAllDepartements(){
+        return $this->findAll();
+    }
 }

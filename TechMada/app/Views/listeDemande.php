@@ -209,7 +209,7 @@
 <header>
     <strong>TechMada RH — Espace Responsable</strong>
     <span>Connecté : <?= esc(session('employe_nom')) ?></span>
-    <a href="/logout">Déconnexion</a>
+    <a href="/auth/logout">Déconnexion</a>
 </header>
 
 <main>

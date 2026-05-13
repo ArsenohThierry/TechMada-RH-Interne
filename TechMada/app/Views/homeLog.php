@@ -126,12 +126,20 @@
         <p class="subtitle">Système de Gestion des Congés</p>
 
         <?php if (session()->get('logged_in')): ?>
+            <?php
+                $userRole = session()->get('user_role');
+                $dashboardUrl = match ($userRole) {
+                    'admin' => base_url('/admin/dashboard'),
+                    'rh' => base_url('/rh/dashboard'),
+                    default => base_url('/employe/dashboard'),
+                };
+            ?>
             <div class="user-greeting">
                 Bienvenue <strong><?= session()->get('user_prenom') ?></strong>!
             </div>
 
             <div class="button-group">
-                <a href="<?= base_url('/dashboard') ?>" class="btn btn-primary">
+                <a href="<?= $dashboardUrl ?>" class="btn btn-primary">
                      Accéder au Dashboard
                 </a>
                 <a href="<?= base_url('/auth/logout') ?>" class="btn logout-btn">

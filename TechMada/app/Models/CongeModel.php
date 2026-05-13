@@ -82,10 +82,11 @@ class CongeModel extends Model
     public function getAllAvecFiltres(?string $statut = null, ?int $dept = null): array
     {
         $builder = $this->select('conges.*, 
-                              employes.nom AS employe_nom, 
-                              employes.prenom AS employe_prenom,
-                              departements.nom AS departement,
-                              types_conge.libelle AS type_conge_libelle')
+                      employes.nom AS employe_nom, 
+                      employes.prenom AS employe_prenom,
+                      employes.departement_id AS departement_id,
+                      departements.nom AS departement,
+                      types_conge.libelle AS type_conge_libelle')
             ->join('employes', 'employes.id = conges.employe_id')
             ->join('types_conge', 'types_conge.id = conges.type_conge_id')
             ->join('departements', 'departements.id = employes.departement_id', 'left')

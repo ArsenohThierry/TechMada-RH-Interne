@@ -80,7 +80,7 @@ class AuthController extends BaseController
                     $target = '/employe/dashboard';
             }
 
-            return redirect()->to($target)->with('success', 'Bienvenue ' . $user['prenom']);
+            return redirect()->to("/")->with('success', 'Bienvenue ' . $user['prenom']);
         } catch (\Exception $e) {
             log_message('error', 'Login error: ' . $e->getMessage());
             return redirect()->back()->withInput()
