@@ -70,4 +70,88 @@ class RHController extends BaseController
 
         return redirect()->to('/rh/listeDemandes')->with('success', 'Demande approuvée.');
     }
+
+    /**
+     * Refuser une demande de congé
+     */
+    public function refuserDemande($id_demande)
+    {
+        $congeModel = new CongeModel();
+        $conge = $congeModel->find($id_demande);
+
+        if (! $conge) {
+            return redirect()->to('/rh/listeDemandes')->with('error', 'Demande introuvable.');
+        }
+
+        if ($conge['statut'] !== 'en_attente') {
+            return redirect()->to('/rh/listeDemandes')->with('error', 'La demande n\'est pas en attente.');
+        }
+
+        $rules = ['commentaire_rh' => 'permit_empty|string|max_length[500]'];
+        if (!$this->validate($rules)) {
+            return redirect()->back()->with('errors', $this->validator->getErrors());
+        }
+
+        $commentaireRh = $this->request->getPost('commentaire_rh') ?: null;
+        $traitePar = session()->get('employe_id') ? (int) session()->get('employe_id') : null;
+
+        $updateData = [
+            'statut' => 'refusee',
+            'commentaire_rh' => $commentaireRh,
+            'traite_par' => $traitePar,
+        ];
+
+        $congeModel->update((int) $id_demande, $updateData);
+
+        return redirect()->to('/rh/listeDemandes')->with('success', 'Demande refusée.');
+    }
+
+    /**
+     * Annuler une demande approuvée (remboursement du solde)
+     */
+    public function annulerDemande($id_demande)
+    {
+        $congeModel = new CongeModel();
+        $conge = $congeModel->find($id_demande);
+
+        if (! $conge) {
+            return redirect()->to('/rh/listeDemandes')->with('error', 'Demande introuvable.');
+        }
+
+        if ($conge['statut'] !== 'approuvee') {
+            return redirect()->to('/rh/listeDemandes')->with('error', 'Seules les demandes approuvées peuvent être annulées.');
+        }
+
+        $typeId = (int) $conge['type_conge_id'];
+        $employeId = (int) $conge['employe_id'];
+        $nbJours = (int) $conge['nb_jours'];
+
+        $typeCongeModel = new TypeCongeModel();
+        $typeConge = $typeCongeModel->find($typeId);
+
+        // If deductible, decrement jours_pris to refund days
+        if ($typeConge && $typeConge['deductible']) {
+            $soldeModel = new SoldeModel();
+            $solde = $soldeModel->getSolde($employeId, $typeId);
+
+            if ($solde) {
+                // Decrement jours_pris
+                $db = \Config\Database::connect();
+                $builder = $db->table('soldes');
+                $builder->set('jours_pris', "MAX(0, jours_pris - {$nbJours})", false)
+                        ->where('id', (int) $solde['id'])
+                        ->update();
+            }
+        }
+
+        $traitePar = session()->get('employe_id') ? (int) session()->get('employe_id') : null;
+        $updateData = [
+            'statut' => 'annulee',
+            'traite_par' => $traitePar,
+        ];
+
+        $congeModel->update((int) $id_demande, $updateData);
+
+        return redirect()->to('/rh/listeDemandes')->with('success', 'Demande annulée et solde remboursé.');
+    }
 }
