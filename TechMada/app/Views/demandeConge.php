@@ -9,11 +9,15 @@
     <h2>Demande de congé</h2>
 
     <?php if (! empty($error)) : ?>
-        <p style="color: red;"><?= esc($error) ?></p>
+        <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+            <strong>⚠️ Erreur :</strong> <?= esc($error) ?>
+        </div>
     <?php endif; ?>
 
     <?php if (! empty($success)) : ?>
-        <p style="color: green;"><?= esc($success) ?></p>
+        <div style="background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+            <strong>✓ Succès :</strong> <?= esc($success) ?>
+        </div>
     <?php endif; ?>
 
     <form action="/conges/send" method="POST">

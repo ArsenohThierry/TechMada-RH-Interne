@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\CongeModel;
 use App\Models\TypeCongeModel;
+use App\Models\SoldeModel;
 
 class CongeController extends BaseController
 {
@@ -30,45 +31,64 @@ class CongeController extends BaseController
     }
 
     public function envoyerConges(){
-        $rules = [
-            'type_conge' => 'required|is_natural_no_zero',
-            'date_debut' => 'required|valid_date[Y-m-d]',
-            'date_fin'   => 'required|valid_date[Y-m-d]',
-            'commentaire' => 'permit_empty|string',
+        $id_employe = 1; // TODO: À récupérer de la session de l'utilisateur connecté
+        $id_type_conge = (int) $this->request->getPost('type_conge');
+        $date_debut = $this->request->getPost('date_debut');
+        $date_fin = $this->request->getPost('date_fin');
+        $commentaire = $this->request->getPost('commentaire');
+
+        // Validation des dates
+        if (strtotime($date_fin) < strtotime($date_debut)) {
+            return redirect()->to('/conge/form')
+                           ->with('error', 'La date de fin doit être postérieure ou égale à la date de début.');
+        }
+
+        // Récupérer le type de congé
+        $typeCongeModel = new TypeCongeModel();
+        $typeConge = $typeCongeModel->find($id_type_conge);
+        
+        if (!$typeConge) {
+            return redirect()->to('/conge/form')
+                           ->with('error', 'Le type de congé sélectionné n\'existe pas.');
+        }
+
+        // Calculer le nombre de jours
+        $nb_jours = (strtotime($date_fin) - strtotime($date_debut)) / (60 * 60 * 24) + 1;
+
+        // Vérifier si le type est déductible
+        if ($typeConge['deductible']) {
+            $soldeModel = new SoldeModel();
+            $joursRestants = $soldeModel->getJoursRestants($id_employe, $id_type_conge);
+
+            if ($joursRestants <= 0) {
+                return redirect()->to('/conge/form')
+                               ->with('error', 'Vous n\'avez pas de solde disponible pour ce type de congé.');
+            }
+
+            if ($nb_jours > $joursRestants) {
+                return redirect()->to('/conge/form')
+                               ->with('error', "Vous n'avez que {$joursRestants} jour(s) restant(s) pour ce type de congé. Vous en demandez {$nb_jours}.");
+            }
+        }
+
+        // Insérer la demande de congé
+        $congeModel = new CongeModel();
+        $data = [
+            'employe_id' => $id_employe,
+            'type_conge_id' => $id_type_conge,
+            'date_debut' => $date_debut,
+            'date_fin' => $date_fin,
+            'nb_jours' => (int) $nb_jours,
+            'motif' => $commentaire ?: null,
+            'statut' => 'en_attente'
         ];
 
-        if (! $this->validate($rules)) {
-            return redirect()->to('/conge/form')->with('error', implode(' ', $this->validator->getErrors()));
+        if (!$congeModel->insert($data)) {
+            return redirect()->to('/conge/form')
+                           ->with('error', 'Une erreur est survenue lors de l\'enregistrement de votre demande.');
         }
 
-        $employeId = (int) (session()->get('employe_id') ?? 0);
-        if ($employeId <= 0) {
-            return redirect()->to('/conge/form')->with('error', 'Vous devez être connecté pour soumettre une demande de congé.');
-        }
-
-        $dateDebut = new \DateTimeImmutable($this->request->getPost('date_debut'));
-        $dateFin = new \DateTimeImmutable($this->request->getPost('date_fin'));
-
-        if ($dateFin < $dateDebut) {
-            return redirect()->to('/conge/form')->with('error', 'La date de fin doit être postérieure ou égale à la date de début.');
-        }
-
-        $nbJours = $dateDebut->diff($dateFin)->days + 1;
-
-        $congeModel = new CongeModel();
-        $insertId = $congeModel->insertConge([
-            'employe_id'    => $employeId,
-            'type_conge_id' => (int) $this->request->getPost('type_conge'),
-            'date_debut'    => $dateDebut->format('Y-m-d'),
-            'date_fin'      => $dateFin->format('Y-m-d'),
-            'nb_jours'      => $nbJours,
-            'motif'         => trim((string) $this->request->getPost('commentaire')) ?: null,
-        ]);
-
-        if ($insertId === false) {
-            return redirect()->to('/conge/form')->with('error', 'La demande de congé n’a pas pu être enregistrée.');
-        }
-
-        return redirect()->to('/conge/form')->with('success', 'Votre demande de congé a été soumise avec succès.');
+        return redirect()->to('/conge/form')
+                       ->with('success', 'Votre demande de congé a été envoyée avec succès.');
     }
 }
